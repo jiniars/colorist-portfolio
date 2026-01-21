@@ -311,3 +311,146 @@ h2 { font-size:clamp(2.2rem,4vw,3.2rem); margin-bottom:1rem; }
     color:#fff;
     text-decoration:none;
 }
+
+/* ==========================
+   MOBILE / RESPONSIVE
+   Přidej na konec style.css
+   ========================== */
+
+/* menší telefony + obecně */
+@media (max-width: 768px) {
+
+  /* stránka */
+  .content {
+    padding: 1.25rem;
+    max-width: 680px;
+  }
+
+  /* navbar - ať se vejde */
+  .navbar {
+    top: 12px;
+    height: 44px;
+  }
+
+  /* social vlevo trochu menší a blíž */
+  .nav-left.social-icons {
+    left: 12px;
+    gap: 10px;
+  }
+  .nav-left.social-icons a i {
+    font-size: 18px;
+  }
+
+  /* střední tlačítka menší, ať se vejdou */
+  .nav-center {
+    gap: 10px;
+  }
+  .nav-center button {
+    padding: 6px 10px;
+    font-size: 0.72rem;
+    border-radius: 999px;
+  }
+
+  /* tečka pod aktivním tlačítkem – menší + blíž */
+  .nav-center button::after {
+    bottom: -10px;
+    width: 4px;
+    height: 4px;
+  }
+
+  /* h1 menší + dovolíme zalomení (na mobilu je to lepší než ellipsis) */
+  h1 {
+    font-size: clamp(1.8rem, 7vw, 2.6rem);
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+    line-height: 1.15;
+  }
+
+  /* lead text */
+  .lead {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* tagy menší */
+  .tags {
+    margin-top: 1.2rem;
+    gap: 8px;
+  }
+  .tags span {
+    padding: 6px 12px;
+    font-size: 0.72rem;
+  }
+
+  /* CAROUSEL – menší výška, víc friendly */
+  .project-carousel-wrapper {
+    width: 92%;
+    max-width: 92vw;
+  }
+
+  .carousel-item img {
+    max-height: 42vh;        /* na mobilu nesmí žrát celou obrazovku */
+    border-radius: 14px;
+  }
+
+  /* šipky – radši jako “floating” nad carousel, aby byly klikatelné */
+  .carousel-arrow {
+    font-size: 2rem;
+    opacity: 0.8;
+    padding: 10px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(6px);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .carousel-arrow.left {
+    margin-right: 0;
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .carousel-arrow.right {
+    margin-left: 0;
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* overlay text na mobilu o trochu větší a čitelnější */
+  .overlay-content {
+    font-size: 0.9rem;
+    max-width: 92%;
+  }
+  .overlay-content .icon-link {
+    font-size: 1.7rem;
+  }
+
+  /* info pod carouselem */
+  .carousel-info {
+    margin-top: 10px;
+    font-size: 0.95rem;
+  }
+
+  /* CONTACT button */
+  .contact-btn {
+    padding: 12px 18px;
+    font-size: 0.95rem;
+  }
+}
+
+/* extra malé telefony */
+@media (max-width: 420px) {
+  .nav-center button {
+    padding: 6px 9px;
+    font-size: 0.68rem;
+  }
+  .nav-left.social-icons a i {
+    font-size: 17px;
+  }
+  .carousel-item img {
+    max-height: 38vh;
+  }
+}
