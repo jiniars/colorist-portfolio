@@ -1,12 +1,14 @@
-/* RESET */
+/* =========================================================
+   RESET + SAFE AREA + VIEWPORT FIX VARS
+   ========================================================= */
 * { margin:0; padding:0; box-sizing:border-box; }
 
 :root{
-  /* safe-area (iPhone notch + bottom bar) */
   --sat: env(safe-area-inset-top);
   --sab: env(safe-area-inset-bottom);
   --sal: env(safe-area-inset-left);
   --sar: env(safe-area-inset-right);
+  --vh: 1vh;
 }
 
 html, body {
@@ -14,360 +16,475 @@ html, body {
   overflow:hidden;
   background:#0a0a0a;
   color:#eaeaea;
-  font-family: Inter, sans-serif;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* NAVBAR */
+/* =========================================================
+   COLOR WHEEL BACKGROUND (smooth + grain to reduce banding)
+   ========================================================= */
+#colorWheel{
+  position: fixed;
+  inset: -18vmax;
+  z-index: 0;
+  pointer-events: none;
+  transform: translate3d(0,0,0);
+  will-change: transform;
+  opacity: 0.92;
+
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0,0,0,0.46) 0%, rgba(0,0,0,0.84) 55%, rgba(0,0,0,0.98) 100%),
+    conic-gradient(
+      from 0deg,
+      rgba(255, 70, 90, 0.48),
+      rgba(255, 170, 70, 0.45),
+      rgba(255, 245, 120, 0.42),
+      rgba(120, 255, 180, 0.42),
+      rgba(90, 210, 255, 0.45),
+      rgba(140, 140, 255, 0.46),
+      rgba(230, 120, 255, 0.47),
+      rgba(255, 70, 90, 0.48)
+    );
+
+  -webkit-mask-image: radial-gradient(circle at 50% 50%,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 40%,
+    rgba(0,0,0,0.78) 56%,
+    rgba(0,0,0,0.28) 72%,
+    rgba(0,0,0,0) 86%
+  );
+  mask-image: radial-gradient(circle at 50% 50%,
+    rgba(0,0,0,1) 0%,
+    rgba(0,0,0,1) 40%,
+    rgba(0,0,0,0.78) 56%,
+    rgba(0,0,0,0.28) 72%,
+    rgba(0,0,0,0) 86%
+  );
+
+  filter: blur(52px) saturate(130%) contrast(102%);
+}
+
+#colorWheel::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: radial-gradient(circle at 50% 45%,
+    rgba(0,0,0,0.05) 0%,
+    rgba(0,0,0,0.58) 62%,
+    rgba(0,0,0,0.96) 100%
+  );
+}
+
+/* subtle grain overlay */
+#colorWheel::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity: 0.14;
+  mix-blend-mode: soft-light;
+  pointer-events:none;
+
+  background:
+    repeating-linear-gradient(0deg,
+      rgba(255,255,255,0.012) 0px,
+      rgba(255,255,255,0.012) 1px,
+      rgba(0,0,0,0.012) 2px,
+      rgba(0,0,0,0.012) 3px
+    ),
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,0.010) 0px,
+      rgba(255,255,255,0.010) 1px,
+      rgba(0,0,0,0.010) 2px,
+      rgba(0,0,0,0.010) 3px
+    );
+  filter: blur(0.6px);
+}
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
 .navbar {
   position: fixed;
-  top: calc(12px + var(--sat)); /* respektuje notch */
+  top: calc(12px + var(--sat));
+  left: 0;
   width:100%;
   z-index:100;
+
   display:flex;
   justify-content:center;
   align-items:center;
   height:50px;
+
   padding-left: calc(12px + var(--sal));
   padding-right: calc(12px + var(--sar));
 }
 
-.social-icons a { color:#fff; text-decoration:none; }
-.social-icons a i { color:#fff; }
+.social-icons a{ color:#fff; text-decoration:none; }
+.social-icons a i{ color:#fff; }
 
-.nav-left {
+.nav-left{
   position:absolute;
   left: calc(20px + var(--sal));
   display:flex;
   gap:12px;
+  align-items:center;
 }
-
-.nav-left i {
+.nav-left i{
   font-size:20px;
   opacity:0.75;
-  transition:0.25s;
+  transition: opacity 0.25s ease, transform 0.25s ease;
 }
-.nav-left i:hover { opacity:1; transform:translateY(-2px); }
+.nav-left a:hover i{
+  opacity:1;
+  transform: translateY(-2px);
+}
 
-.nav-center {
+.nav-center{
   display:flex;
   gap:22px;
+  align-items:center;
 }
-
-.nav-center button {
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.15);
+.nav-center button{
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
   color:#fff;
   padding:6px 14px;
   border-radius:999px;
   font-size:0.75rem;
   cursor:pointer;
   opacity:0.75;
-  position: relative;
+  position:relative;
   backdrop-filter: blur(10px);
+  transition: background 0.25s, border-color 0.25s, transform 0.25s, opacity 0.25s;
 }
-.nav-center button.active { opacity:1; }
+.nav-center button:hover{
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.28);
+  transform: translateY(-1px);
+  opacity: 1;
+}
+.nav-center button.active{ opacity:1; }
 
-.nav-center button::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -14px;
-  width: 5px;
-  height: 5px;
-  background: #fff;
-  border-radius: 50%;
+.nav-center button::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:-14px;
+  width:5px;
+  height:5px;
+  background:#fff;
+  border-radius:50%;
   transform: translateX(-50%) scale(0);
-  opacity: 0;
-  transition: transform 0.35s cubic-bezier(.4,0,.2,1),
-              opacity 0.35s ease;
+  opacity:0;
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1), opacity 0.35s ease;
 }
-
-.nav-center button.active::after {
+.nav-center button.active::after{
   transform: translateX(-50%) scale(1);
   opacity: 0.9;
 }
 
-/* SECTIONS / WRAPPER */
-#page-wrapper {
+/* =========================================================
+   PAGE WRAPPER + SECTIONS
+   ========================================================= */
+#page-wrapper{
+  position: relative;
+  z-index: 1;
   width:100%;
   height:100%;
   will-change: transform;
 }
 
-.section {
-  /* iOS Safari fix: používáme dynamický viewport */
-  height: 100vh;
-  min-height: 100svh;  /* small viewport height (lepší na iOS) */
-  min-height: 100dvh;  /* dynamic viewport height (nejlepší když podporováno) */
+.section{
+  height: calc(var(--vh) * 100);
+  min-height: 100svh;
+  min-height: 100dvh;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  /* bezpečné odsazení od notch/bottom baru */
-  padding-top: calc(76px + var(--sat));  /* navbar + safe top */
-  padding-bottom: calc(24px + var(--sab));
-  padding-left:  calc(10px + var(--sal));
+  padding-top: calc(76px + var(--sat));
+  padding-bottom: calc(28px + var(--sab));
+  padding-left: calc(10px + var(--sal));
   padding-right: calc(10px + var(--sar));
 }
 
-.content {
-  max-width:900px;
+/* default content – necháme čitelné pro textové sekce */
+.content{
+  max-width: 900px;
   padding: 2rem;
   text-align:center;
+  width: 100%;
 }
 
-/* TYPO */
-h1 {
+/* Home content přes celou šířku, bez vnitřního paddingu */
+.section.hero .content{
+  max-width: none;
+  width: 100%;
+  padding: 0 !important;          /* 🔥 úplně pryč padding */
+  margin: 0;
+}
+
+/* Carousel skutečně přes celou šířku viewportu */
+.section.hero .carousel-stage,
+.section.hero .carousel-3up{
+  width: calc(100vw - var(--sal) - var(--sar));
+  max-width: none;
+}
+
+/* zrušíme případné boční mezery z mobile rules */
+@media (max-width: 768px){
+  .section.hero .content{
+    padding: 0 !important;
+  }
+}
+
+/* =========================================================
+   TYPO
+   ========================================================= */
+h1{
   font-size: clamp(2.2rem, 4vw, 3.5rem);
   margin-bottom: 1rem;
   white-space: nowrap;
-  overflow: hidden;
+  overflow:hidden;
   text-overflow: ellipsis;
 }
-
-h2 {
-  font-size: clamp(2.2rem,4vw,3.2rem);
+h2{
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
   margin-bottom: 1rem;
 }
-
-.lead { font-size:1.1rem; opacity:0.85; }
-
-/* ABOUT TEXT */
-.section.about p {
-  font-size: 1rem;
-  line-height: 1.8;
-  color: #eaeaea;
+.lead{
+  font-size: 1.1rem;
+  opacity: 0.86;
+  line-height: 1.6;
 }
 
-.section.about .content {
-  text-align: left;
-  max-width: 900px;
+/* =========================================================
+   ABOUT
+   ========================================================= */
+.section.about .content{
+  text-align:left;
+  max-width:900px;
   margin: 0 auto;
 }
-
-.highlight-link {
-  font-weight: bold;
-  color: #b25cff;
-  text-decoration: none;
-  transition: color 0.25s;
-}
-.highlight-link:hover { color:#e0a0ff; }
-
-/* About left alignment */
-.about-left {
-  text-align: left;
-  max-width: 800px;
-  margin: 0 auto;
+.section.about p{
+  font-size:1rem;
+  line-height:1.8;
+  color:#eaeaea;
 }
 
-/* Avatar */
-.avatar-wrapper {
-  display: flex;
-  justify-content: flex-start;
+.highlight-link{
+  font-weight:700;
+  color:#b25cff;
+  text-decoration:none;
+  transition: color 0.25s ease;
+}
+.highlight-link:hover{ color:#e0a0ff; }
+
+.about-left{
+  text-align:left;
+  max-width:800px;
+  margin:0 auto;
+}
+
+.avatar-wrapper{
+  display:flex;
+  justify-content:flex-start;
   margin-bottom: 1rem;
 }
-
-.avatar {
+.avatar{
   width: 120px;
   height: 120px;
   border-radius: 50%;
   border: 4px solid #fff;
   object-fit: cover;
   box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-  margin-right: 1rem;
-  float: left; /* desktop: může obtekat text */
-}
-
-/* TAGS */
-.tags {
-  margin-top:1.8rem;
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-.tags span {
-  padding:6px 14px;
-  font-size:0.75rem;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,0.18);
-}
-
-/* BACKGROUNDS */
-.hero {
-  background:
-    radial-gradient(circle at top left, rgba(255,0,0,0.25), transparent 60%),
-    radial-gradient(circle at bottom right, rgba(0,0,255,0.25), transparent 60%),
-    #0a0a0a;
-}
-.about {
-  background:
-    radial-gradient(circle at top right, rgba(0,255,0,0.25), transparent 60%),
-    radial-gradient(circle at bottom left, rgba(0,0,255,0.18), transparent 60%),
-    #0a0a0a;
-}
-.contact {
-  background:
-    radial-gradient(circle at center top, rgba(255,0,255,0.25), transparent 60%),
-    radial-gradient(circle at center bottom, rgba(0,255,255,0.18), transparent 60%),
-    #0a0a0a;
-}
-
-/* ================= CAROUSEL ================= */
-
-.carousel-container {
-  position: relative;
-  width:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-top: 1.5rem;
-}
-
-.project-carousel-wrapper {
-  width:90%;
-  max-width:1000px;
-  overflow:hidden;
-}
-
-.carousel-track {
-  display:flex;
-  transition:transform 0.8s ease-in-out;
-  will-change: transform;
-}
-
-.carousel-item {
-  flex:0 0 100%;
-  position:relative;
-  display:flex;
-  justify-content:center;
-}
-
-.carousel-item img {
-  max-width:100%;
-  max-height: 65vh;
-  object-fit: contain;
-  border-radius:16px;
-}
-
-/* OVERLAY */
-.carousel-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.carousel-item:hover .carousel-overlay { opacity: 1; }
-
-.overlay-content {
-  font-size: 0.85rem;
-  color: #fff;
-  text-align: center;
-  max-width: 90%;
-}
-
-.overlay-content p { margin-bottom: 6px; }
-
-.overlay-icons {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.overlay-content .icon-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  color: #fff;
-  opacity: 0.85;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  text-decoration: none;
-}
-
-.overlay-content .icon-link:hover {
-  opacity: 1;
-  transform: translateY(-2px);
-}
-
-/* ARROWS (desktop default) */
-.carousel-arrow {
-  font-size:2.2rem;
-  cursor:pointer;
-  opacity:0.6;
-  user-select:none;
-}
-.carousel-arrow:hover { opacity:1; }
-.carousel-arrow.left { margin-right:20px; }
-.carousel-arrow.right { margin-left:20px; }
-
-/* INFO */
-.carousel-info {
-  margin-top: 12px;
-  opacity: 0.85;
-}
-
-/* CONTACT */
-.contact-btn {
-  display:inline-block;
-  margin-top: 20px;
-  padding:10px 22px;
-  border-radius:30px;
-  border:1px solid rgba(255,255,255,0.2);
-  color:#fff;
-  text-decoration:none;
 }
 
 /* =========================================================
-   MOBILE / RESPONSIVE (iPhone Safari tuned)
+   CONTACT
    ========================================================= */
-@media (max-width: 768px) {
+.contact-btn{
+  display:inline-block;
+  margin-top: 20px;
+  padding: 10px 22px;
+  border-radius: 30px;
+  border: 1px solid rgba(255,255,255,0.2);
+  color:#fff;
+  text-decoration:none;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+.contact-btn:hover{
+  transform: translateY(-1px);
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.30);
+}
 
-  /* menší navbar + safe-area */
-  .navbar {
-    height: 44px;
+/* =========================================================
+   CAROUSEL (DESKTOP: wide, center 100% feel, sides cropped)
+   - no borders, no gaps, no rounding
+   ========================================================= */
+.carousel-stage{
+  width: 100%;
+  display:flex;
+  justify-content:center;
+  margin-top: 1.4rem;
+}
+
+.carousel-3up{
+  /* ✅ wider */
+  width: min(1600px, calc(100vw - var(--sal) - var(--sar)));
+  display:flex;
+  align-items: stretch;
+  justify-content:center;
+  gap: 0;
+  overflow: hidden;
+  will-change: transform, opacity;
+  border: none;
+  background: transparent;
+}
+
+/* panels */
+.carousel-panel{
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  height: min(62vh, 600px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  will-change: transform, opacity;
+}
+
+/* images: crop is OK */
+.carousel-panel img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border-radius: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* widths: center dominates */
+.carousel-panel.prev,
+.carousel-panel.next{
+  flex: 0 0 24%;
+  opacity: 0.92;
+  pointer-events: none;
+}
+.carousel-panel.current{
+  flex: 0 0 52%;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* side dim */
+.side-dim{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,0.22);
+  pointer-events:none;
+}
+
+/* overlay only on current */
+.carousel-overlay{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,0.55);
+  opacity:0;
+  transition: opacity 0.35s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.carousel-panel.current:hover .carousel-overlay{ opacity:1; }
+
+.overlay-content{
+  font-size: 0.92rem;
+  color:#fff;
+  text-align:center;
+  max-width: 90%;
+}
+.overlay-content p{ margin-bottom: 6px; }
+
+.overlay-icons{
+  display:flex;
+  gap: 14px;
+  justify-content:center;
+  margin-top: 10px;
+}
+.overlay-content .icon-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 1.7rem;
+  color:#fff;
+  opacity:0.85;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  text-decoration:none;
+}
+.overlay-content .icon-link:hover{
+  opacity:1;
+  transform: translateY(-2px);
+}
+
+/* focus overlay (mobile only) */
+.focus-overlay{ display:none; }
+
+.carousel-info{
+  margin-top: 12px;
+  opacity: 0.88;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 900px){
+  .carousel-panel{ height: min(54vh, 540px); }
+  .carousel-panel.prev,
+  .carousel-panel.next{ flex-basis: 22%; }
+  .carousel-panel.current{ flex-basis: 56%; }
+}
+
+/* MOBILE: main + peeks, sides darker */
+@media (max-width: 768px){
+
+  .navbar{
+    height:44px;
     top: calc(10px + var(--sat));
   }
 
-  .nav-left {
+  .nav-left{
     left: calc(12px + var(--sal));
     gap: 10px;
   }
-  .nav-left i { font-size: 18px; }
+  .nav-left i{ font-size: 18px; }
 
-  .nav-center { gap: 10px; }
-  .nav-center button {
+  .nav-center{ gap: 10px; }
+  .nav-center button{
     padding: 6px 10px;
     font-size: 0.72rem;
   }
-
-  .nav-center button::after {
+  .nav-center button::after{
     bottom: -12px;
     width: 4px;
     height: 4px;
   }
 
-  /* sekce: víc prostoru pro bottom bar, ať to nezaleze */
-  .section {
+  .section{
     padding-top: calc(70px + var(--sat));
-    padding-bottom: calc(32px + var(--sab));
+    padding-bottom: calc(34px + var(--sab));
   }
 
-  .content {
+  .content{
     padding: 1.25rem;
     max-width: 680px;
   }
 
-  /* h1 na mobilu radši dovol zalomení (lepší než ellipsis) */
-  h1 {
+  h1{
     font-size: clamp(1.85rem, 7vw, 2.6rem);
     white-space: normal;
     overflow: visible;
@@ -375,85 +492,72 @@ h2 {
     line-height: 1.15;
   }
 
-  .lead {
-    font-size: 1rem;
-    line-height: 1.6;
+  #colorWheel{
+    filter: blur(56px) saturate(125%) contrast(101%);
+    opacity: 0.88;
+  }
+  #colorWheel::after{ opacity: 0.12; }
+
+  .carousel-3up{
+    width: calc(100vw - var(--sal) - var(--sar));
   }
 
-  /* CAROUSEL: menší výška a bez šipek */
-  .carousel-arrow {
-    display: none !important;   /* na mobilu šipky nepotřebuješ */
+  .carousel-panel{
+    height: min(38svh, 360px);
+    height: min(38dvh, 360px);
   }
 
-  .project-carousel-wrapper {
-    width: 92%;
-    max-width: 92vw;
+  .carousel-panel.prev,
+  .carousel-panel.next{
+    flex-basis: 12%;
+    opacity: 0.78;
   }
 
-  .carousel-item img {
-    max-height: 40svh;   /* svh = spolehlivější na iOS */
-    max-height: 40dvh;   /* preferuj dynamický viewport když je */
-    border-radius: 14px;
+  .carousel-panel.current{
+    flex-basis: 76%;
   }
 
-  .overlay-content {
-    font-size: 0.9rem;
+  .carousel-panel.current img{
+    object-position: 50% 42%; /* focus slightly higher */
+  }
+
+  .side-dim{
+    background: rgba(0,0,0,0.45); /* darker sides */
+  }
+
+  .focus-overlay{
+    display:block;
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      radial-gradient(circle at 50% 45%,
+        rgba(0,0,0,0.00) 0%,
+        rgba(0,0,0,0.10) 52%,
+        rgba(0,0,0,0.26) 100%
+      );
+  }
+
+  .overlay-content{
+    font-size: 0.95rem;
     max-width: 92%;
   }
-  .overlay-content .icon-link {
-    font-size: 1.7rem;
-  }
-
-  .carousel-info {
-    margin-top: 10px;
-    font-size: 0.95rem;
-  }
-
-  /* ABOUT: na mobilu zruš float, dej avatar nad text */
-  .about-left {
-    max-width: 680px;
-  }
-
-  .avatar-wrapper {
-    justify-content: flex-start;
-    margin-bottom: 0.85rem;
-  }
-
-  .avatar {
-    float: none;              /* zásadní: float ruší layout na mobilu */
-    margin-right: 0;
-    width: 110px;
-    height: 110px;
-  }
-
-  /* když chceš, můžeš i lehce zmenšit text v about */
-  .section.about p {
-    font-size: 0.98rem;
-    line-height: 1.75;
-  }
-
-  /* CONTACT button větší tap target */
-  .contact-btn {
-    padding: 12px 18px;
-    font-size: 0.95rem;
-  }
+  .overlay-content .icon-link{ font-size: 1.75rem; }
 }
 
-/* extra malé telefony */
-@media (max-width: 420px) {
-  .nav-center button {
+@media (max-width: 420px){
+  .nav-center button{
     padding: 6px 9px;
     font-size: 0.68rem;
   }
-  .nav-left i { font-size: 17px; }
+  .nav-left i{ font-size: 17px; }
 
-  .carousel-item img {
-    max-height: 36svh;
-    max-height: 36dvh;
+  .carousel-panel{
+    height: min(34svh, 320px);
+    height: min(34dvh, 320px);
   }
 
-  .avatar {
-    width: 104px;
-    height: 104px;
-  }
+  .carousel-panel.prev,
+  .carousel-panel.next{ flex-basis: 10%; opacity: 0.74; }
+  .carousel-panel.current{ flex-basis: 80%; }
 }

@@ -1,148 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>JAROSLAV NYMBURSKY</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
+  <meta charset="UTF-8">
+  <title>JAROSLAV NYMBURSKY</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <link rel="icon" href="favicon.ico?v=2" type="image/x-icon">
 
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<nav class="navbar">
+  <!-- Color wheel background -->
+  <div id="colorWheel" aria-hidden="true"></div>
+
+  <nav class="navbar">
     <div class="nav-left social-icons">
-        <a href="https://www.instagram.com/jaroslav.nymbursky?igsh=ZTV5MzZ4Y3B6NDdh&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.linkedin.com/in/jaroslavnymbursky?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank"><i class="fab fa-linkedin"></i></a>
-        <a href="https://www.imdb.com/name/nm14907948/?ref_=nv_sr_srsg_0_tt_0_nm_8_in_0_q_Jaroslav%2520Nym" target="_blank"><i class="fa-brands fa-imdb"></i></a>
+      <a href="https://www.instagram.com/jaroslav.nymbursky?igsh=ZTV5MzZ4Y3B6NDdh&utm_source=qr" target="_blank" aria-label="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/jaroslavnymbursky?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" aria-label="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="https://www.imdb.com/name/nm14907948/" target="_blank" aria-label="IMDb">
+        <i class="fa-brands fa-imdb"></i>
+      </a>
     </div>
 
     <div class="nav-center">
-        <button data-index="0">Home</button>
-        <button data-index="1">About</button>
-        <button data-index="2">Contact</button>
+      <button data-index="0">Home</button>
+      <button data-index="1">About</button>
+      <button data-index="2">Contact</button>
     </div>
+  </nav>
 
-</nav>
+  <div id="page-wrapper">
 
-<div id="page-wrapper">
+    <!-- ================= HOME ================= -->
+    <section class="section hero">
+      <div class="content">
 
-<!-- ================= HOME ================= -->
-<section class="section hero">
-<div class="content">
+        <h1>Color that serves the story.</h1>
+        <p class="lead">From camera intent to final emotion.</p>
 
-<h1>Color that serves the story.</h1>
+        <div class="carousel-stage" id="carouselStage">
+          <div class="carousel-3up" id="carousel3up" aria-label="Project carousel">
 
-<p class="lead">
-   From camera intent to final emotion.
-</p>
-
-<!-- ===== CAROUSEL ===== -->
-<div class="carousel-container">
-
-    <div class="carousel-arrow left">&#10094;</div>
-
-    <div class="project-carousel-wrapper">
-        <div class="carousel-track">
-
-            <div class="carousel-item"
-                 data-title="Vzpomínka / Remembrance"
-                 data-type="Student Short Film"
-                 data-director="Ondřej Vasilovčík"
-                 data-sound="Martin Bezouška"
-                 data-youtube="https://www.youtube.com/watch?v=3vBnKBwoHIQ&list=RD3vBnKBwoHIQ&start_radio=1">
-                <img src="https://i.imgur.com/HVIwtyf.jpeg" alt="">
-                <div class="carousel-overlay">
-                    <div class="overlay-content"></div>
-                </div>
+            <div class="carousel-panel prev" aria-hidden="true">
+              <img id="imgPrev" alt="">
+              <div class="side-dim" aria-hidden="true"></div>
             </div>
 
-            <div class="carousel-item"
-                 data-title="Vzpomínka / Remembrance"
-                 data-type="Student Short Film"
-                 data-director="Ondřej Vasilovčík"
-                 data-sound="Martin Bezouška"
-                 data-youtube="https://www.youtube.com/watch?v=3vBnKBwoHIQ&list=RD3vBnKBwoHIQ&start_radio=1">
-                <img src="https://i.imgur.com/FYCgd7d.jpeg" alt="">
-                <div class="carousel-overlay">
-                    <div class="overlay-content"></div>
-                </div>
+            <div class="carousel-panel current">
+              <img id="imgCurrent" alt="">
+
+              <!-- subtle focus overlay for mobile (handled by CSS) -->
+              <div class="focus-overlay" aria-hidden="true"></div>
+
+              <div class="carousel-overlay">
+                <div class="overlay-content"></div>
+              </div>
             </div>
 
-            <div class="carousel-item"
-                 data-title="Vzpomínka / Remembrance"
-                 data-type="Student Short Film"
-                 data-director="Ondřej Vasilovčík"
-                 data-sound="Martin Bezouška"
-                 data-youtube="https://www.youtube.com/watch?v=3vBnKBwoHIQ&list=RD3vBnKBwoHIQ&start_radio=1">
-                <img src="https://i.imgur.com/akUiLTc.jpeg" alt="">
-                <div class="carousel-overlay">
-                    <div class="overlay-content"></div>
-                </div>
+            <div class="carousel-panel next" aria-hidden="true">
+              <img id="imgNext" alt="">
+              <div class="side-dim" aria-hidden="true"></div>
             </div>
 
-            <div class="carousel-item"
-                 data-title="Vzpomínka / Remembrance"
-                 data-type="Student Short Film"
-                 data-director="Ondřej Vasilovčík"
-                 data-sound="Martin Bezouška"
-                 data-youtube="https://www.youtube.com/watch?v=3vBnKBwoHIQ&list=RD3vBnKBwoHIQ&start_radio=1">>
-                <img src="https://i.imgur.com/jBTBD2Z.jpeg" alt="">
-                <div class="carousel-overlay">
-                    <div class="overlay-content"></div>
-                </div>
-            </div>
-
+          </div>
         </div>
-    </div>
 
-    <div class="carousel-arrow right">&#10095;</div>
-</div>
+        <div class="carousel-info">
+          <h3></h3>
+          <p></p>
+        </div>
 
-<!-- info POD carouselem -->
-<div class="carousel-info">
-    <h3></h3>
-    <p></p>
-</div>
-<!--
-<div class="tags">
-    <span>Feature Film</span>
-    <span>Commercial</span>
-    <span>Music Video</span>
-    <span>HDR</span>
-</div>
--->
+      </div>
+    </section>
 
-</div>
-</section>
-
-<section class="section about">
-    <div class="content about-left">
+    <!-- ================= ABOUT ================= -->
+    <section class="section about">
+      <div class="content about-left">
         <div class="avatar-wrapper">
-            <img src="avatar.jpg" alt="My Avatar" class="avatar">
+          <img src="avatar.jpg" alt="My Avatar" class="avatar">
         </div>
+
         <h2>About me</h2>
-        <p>I’m a colorist with a strong technical background, currently working at <a href="https://pfx.tv/" target="_blank"><strong style="color:#9b59b6;">PFX</strong></a> as a VFX Data I/O.</p>
-        <p>Over the past four years, I’ve been involved in large-scale international projects, gaining deep insight into high-end post-production pipelines and image workflows.
-        Alongside my role, I focus on color grading, approaching it as a collaborative process built on respecting the DoP’s intent and the story.
-        My technical foundation allows me to work confidently with complex timelines, VFX-heavy projects, and consistent final delivery.</p>
-    </div>
-</section>
 
-<!-- ================= CONTACT ================= -->
-<section class="section contact">
-<div class="content">
-<h2>Contact</h2>
-<a href="mailto:jara.nymbursky@gmail.com" class="contact-btn">jara.nymbursky@gmail.com</a>
-</div>
-</section>
+        <p>
+          I’m a colorist with a strong technical background, currently working at
+          <a href="https://pfx.tv/" target="_blank" class="highlight-link">PFX</a>
+          as a VFX Data I/O.
+        </p>
 
-</div>
+        <p>
+          Over the past four years, I’ve been involved in large-scale international projects, gaining deep insight into high-end post-production pipelines and image workflows.
+          Alongside my role, I focus on color grading, approaching it as a collaborative process built on respecting the DoP’s intent and the story.
+          My technical foundation allows me to work confidently with complex timelines, VFX-heavy projects, and consistent final delivery.
+        </p>
+      </div>
+    </section>
 
-<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
-<script src="script.js"></script>
+    <!-- ================= CONTACT ================= -->
+    <section class="section contact">
+      <div class="content">
+        <h2>Contact</h2>
+        <p class="lead">Available for freelance and long-term collaboration.</p>
+        <a href="mailto:jara.nymbursky@gmail.com" class="contact-btn">jara.nymbursky@gmail.com</a>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
