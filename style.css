@@ -1,0 +1,313 @@
+/* RESET */
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body {
+    height:100%;
+    overflow:hidden;
+    background:#0a0a0a;
+    color:#eaeaea;
+    font-family: Inter, sans-serif;
+}
+
+/* NAVBAR */
+.navbar {
+    position: fixed;
+    top:20px;
+    width:100%;
+    z-index:100;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:50px;
+}
+
+.social-icons a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.social-icons a i {
+    color: #fff;
+}
+
+.nav-left {
+    position:absolute;
+    left:20px;
+    display:flex;
+    gap:12px;
+}
+
+.nav-left i {
+    font-size:20px;
+    opacity:0.75;
+    transition:0.25s;
+}
+.nav-left i:hover { opacity:1; transform:translateY(-2px); }
+
+.nav-center {
+    display:flex;
+    gap:22px;
+}
+
+.nav-center button {
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.15);
+    color:#fff;
+    padding:6px 14px;
+    border-radius:999px;
+    font-size:0.75rem;
+    cursor:pointer;
+    opacity:0.75;
+    position: relative;
+}
+.nav-center button.active { opacity:1; }
+
+.nav-center button::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -14px;              /* spacing pod buttonem */
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    border-radius: 50%;
+    transform: translateX(-50%) scale(0);
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(.4,0,.2,1),
+                opacity 0.35s ease;
+}
+
+.nav-center button.active::after {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.9;
+}
+
+/* SECTIONS */
+#page-wrapper {
+    width:100%;
+    height:100%;
+}
+
+.section {
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.content {
+    max-width:900px;
+    padding:2rem;
+    text-align:center;
+}
+
+h1 {
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    margin-bottom: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+h2 { font-size:clamp(2.2rem,4vw,3.2rem); margin-bottom:1rem; }
+
+.lead { font-size:1.1rem; opacity:0.85; }
+
+.section.about p {
+    font-size: 1rem;          /* lehce větší pro čitelnost */
+    line-height: 1.8;         /* víc prostoru mezi řádky */
+    color: #eaeaea;           /* kontrastní text */
+}
+
+.section.about .content {
+    text-align: left;      /* zarovnání textu vlevo */
+    max-width: 900px;      /* zachováme šířku */
+    margin: 0 auto;        /* center wrapper horizontálně */
+}
+
+.highlight-link {
+    font-weight: bold;         /* bold */
+    color: #b25cff;            /* fialová */
+    text-decoration: none;     
+    transition: color 0.25s;
+}
+
+.highlight-link:hover {
+    color: #e0a0ff;           /* světlejší fialová při hoveru */
+}
+
+/* About left alignment */
+.about-left {
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;  /* centrování sekce */
+}
+
+/* Avatar */
+.avatar-wrapper {
+    display: flex;
+    justify-content: flex-start; /* vlevo */
+    margin-bottom: 1rem;
+}
+
+.avatar {
+    width: 120px;           /* větší avatar */
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    object-fit: cover;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    margin-right: 1rem;      /* mezera mezi avatarem a textem */
+    float: left;             /* aby text mohl být vedle avataru, pokud chceš */
+}
+
+.about-left h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+/* TAGS */
+.tags {
+    margin-top:1.8rem;
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+.tags span {
+    padding:6px 14px;
+    font-size:0.75rem;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.18);
+}
+
+/* BACKGROUNDS */
+.hero {
+    background:
+      radial-gradient(circle at top left, rgba(255,0,0,0.25), transparent 60%),
+      radial-gradient(circle at bottom right, rgba(0,0,255,0.25), transparent 60%),
+      #0a0a0a;
+}
+.about {
+    background:
+      radial-gradient(circle at top right, rgba(0,255,0,0.25), transparent 60%),
+      #0a0a0a;
+}
+.contact {
+    background:
+      radial-gradient(circle at center, rgba(255,0,255,0.25), transparent 60%),
+      #0a0a0a;
+}
+
+/* ================= CAROUSEL ================= */
+
+.carousel-container {
+    position: relative;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:2rem;
+}
+
+.project-carousel-wrapper {
+    width:90%;
+    max-width:1000px;
+    overflow:hidden;
+}
+
+.carousel-track {
+    display:flex;
+    transition:transform 0.8s ease-in-out;
+}
+
+.carousel-item {
+    flex:0 0 100%;
+    position:relative;
+    display:flex;
+    justify-content:center;
+}
+
+.carousel-item img {
+    max-width:100%;
+    max-height:65vh;
+    object-fit:contain;
+    border-radius:16px;
+}
+
+/* OVERLAY */
+.carousel-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-item:hover .carousel-overlay {
+    opacity: 1;
+}
+
+.overlay-content {
+    font-size: 0.85rem;
+    color: #fff;
+    text-align: center;
+    max-width: 90%;
+}
+
+.overlay-content p {
+    margin-bottom: 6px;
+}
+
+.overlay-icons {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.overlay-content .icon-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #fff;
+    opacity: 0.85;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    text-decoration: none;
+}
+
+.overlay-content .icon-link:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+/* ARROWS */
+.carousel-arrow {
+    font-size:2.2rem;
+    cursor:pointer;
+    opacity:0.6;
+    user-select:none;
+}
+.carousel-arrow:hover { opacity:1; }
+.carousel-arrow.left { margin-right:20px; }
+.carousel-arrow.right { margin-left:20px; }
+
+/* INFO */
+.carousel-info {
+    margin-top:12px;
+    opacity:0.8;
+}
+
+/* CONTACT */
+.contact-btn {
+    display:inline-block;
+    margin-top:20px;
+    padding:10px 22px;
+    border-radius:30px;
+    border:1px solid rgba(255,255,255,0.2);
+    color:#fff;
+    text-decoration:none;
+}
